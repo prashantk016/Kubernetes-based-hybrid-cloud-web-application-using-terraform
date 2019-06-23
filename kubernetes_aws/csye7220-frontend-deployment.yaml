@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: csye7220-frontend
+spec:
+  replicas: 2
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: csye7220-frontend
+    spec:
+      containers:
+      - image: prashantkabra/csye7220-frontend
+        imagePullPolicy: Always
+        name: csye7220-frontend
+        env:
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: API_URL_FROM_CONF
+        ports:
+        - containerPort: 80
