@@ -55,7 +55,7 @@ chrome-user-data
 *.tfstate
 *.tfstate.*
 
-azure_details
+*azure_details*
 
 */.settings/
 .classpath
