@@ -5,7 +5,7 @@ print_fn (){
 }
 
 # Azure Backend 
-print_fn "Deploying backend to Azure"
+print_fn "Deploying backend to Azure aks"
 cd terraform_azure
 terraform output kube_config > ~/.kube/config
 print_fn "Added Azure aks config to kubectl"
@@ -30,7 +30,7 @@ print_fn "Backend External IP : "
 echo $backend_external_ip
 
 # AWS frontend
-print_fn "Deploying frontend to AWS"
+print_fn "Deploying frontend to AWS eks"
 cd ../terraform_aws
 terraform output kubeconfig > ~/.kube/config
 print_fn "Added AWS eks config to kubectl"
@@ -42,10 +42,16 @@ cd kubernetes_aws
 kubectl create configmap my-config --from-literal=API_URL_FROM_CONF=http://$backend_external_ip/answer
 kubectl apply -f csye7220-frontend-deployment.yaml
 kubectl apply -f csye7220-frontend-service.yaml
+
 print_fn "Deployed frontend on AWS eks"
 
 frontend_external_ip=$(kubectl get svc csye7220-frontend --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
-print_fn "Front External IP : "
-echo $front_external_ip
-
+while [ -z "$frontend_external_ip" ] 
+do 
+    frontend_external_ip=$(kubectl get svc csye7220-frontend --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    echo "waiting for external ip ...."
+    sleep 5s;
+done
+print_fn "Frontend External IP : "
+echo $frontend_external_ip

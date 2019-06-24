@@ -54,7 +54,7 @@ chrome-user-data
 # .tfstate files
 *.tfstate
 *.tfstate.*
-
+*.tfvars
 *azure_details*
 
 */.settings/
