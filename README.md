@@ -1,4 +1,4 @@
-# CSYE7220_DevOps_Final_Project
+# Kubernetes-based-hybrid-cloud-web-application-using-terraform
 _________
 ## Objectives:
 Manage the infrastructure of a microservice app with kubernetes on AWS & Azure
